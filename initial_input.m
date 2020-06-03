@@ -12,7 +12,7 @@ n=100;
 %p=0.1;
 Tc= 20;
  
-Rmax = 30;
+Rmax = 40;
  
 %Eelc=Etx=Erx
 ETX=50* 10^-9;

@@ -156,21 +156,17 @@ for r=1:1:rmax
     All_CH = [id_CH x_CH y_CH];
     
     %------End Setup--------
-    for a = 1:length(All_CH)-1 % create edges between some of the nodes
-        text(All_CH(a,2),All_CH(a,3),[' ' num2str(id_CH(a))],'Color','b','FontWeight','b')
-    end
     %Reduce energy
     %Initial Energy bit
+    for i = 1:length(All_CH)-1 % create edges between some of the nodes
+        text(All_CH(i,2),All_CH(i,3),[' ' num2str(id_CH(i))],'Color','b','FontWeight','b')
+    end
     Eb = 1e-9;
 %     Eb=1e-6;
     Energy_Transmission = 0;
     for i = 1:1:length(CH_number)
-        path = Greedy(All_CH,CH_number(i).id,70);
-        for k = 2:length(path)
-            m = find(All_CH(:,1) == path(k-1));
-            n = find(All_CH(:,1) == path(k));
-            plot([All_CH(m,2) All_CH(n,2)],[All_CH(m,3) All_CH(n,3)],'ro-','LineWidth',2);
-        end
+        path = Greedy(All_CH,CH_number(i).id,88);
+        path
         for k = 1:1:length(path)-1
             Energy_Transmission = CH_number([CH_number.id] == path(k)).number_worker*Eb*bit + Energy_Transmission;
             CH_number([CH_number.id] == path(k)).RE = CH_number([CH_number.id] == path(k)).RE - Energy_Transmission;     
