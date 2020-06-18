@@ -13,7 +13,6 @@ function path = Greedy(All_CH,start_id,angle,Rmax)
         %Vector cua diem start voi diem sink[x_sink-x_start]
         vector_sf = [finish_point(1)-start_point(1) finish_point(2)-start_point(2)];
         %Kiem Tra goc va do dai lon nhat cua cac diem xung quanh no
-        n
         n = n + 1;
         if norm(vector_sf) <= Rmax
             path(n) = 101;
