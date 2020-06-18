@@ -165,7 +165,7 @@ for r=1:1:rmax
 %     Eb=1e-6;
     Energy_Transmission = 0;
     for i = 1:1:length(CH_number)
-        path = Greedy(All_CH,CH_number(i).id,88);
+        path = Greedy(All_CH,CH_number(i).id,60,Rmax);
         path
         for k = 1:1:length(path)-1
             Energy_Transmission = CH_number([CH_number.id] == path(k)).number_worker*Eb*bit + Energy_Transmission;
