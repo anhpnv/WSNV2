@@ -1,7 +1,6 @@
-function path = Greedy(All_CH,start_id,angle)
+function path = Greedy(All_CH,start_id,angle,Rmax)
     %Greedy
     %vector_finish = [xd yd]
-    Rmax = 40;
     n = 1;
     %Toa do diem finish: [xd yd]
     distance_max = 0;
@@ -9,6 +8,7 @@ function path = Greedy(All_CH,start_id,angle)
     path(n) = start_id;
     while true
         %Toa do diem start:[xd yd]
+        k = find(All_CH(:,1) == start_id);
         start_point = [All_CH(find(All_CH(:,1) == start_id),2) All_CH(find(All_CH(:,1) == start_id),3)];
         %Vector cua diem start voi diem sink[x_sink-x_start]
         vector_sf = [finish_point(1)-start_point(1) finish_point(2)-start_point(2)];
@@ -41,5 +41,8 @@ function path = Greedy(All_CH,start_id,angle)
             break;
         end
 
+    end
+    if path(length(path)) ~= 101
+        path = nan;
     end
 end
