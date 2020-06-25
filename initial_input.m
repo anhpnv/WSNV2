@@ -12,7 +12,7 @@ n=100;
 %p=0.1;
 Tc= 20;
  
-Rmax = 40;
+Rmax = 30;
  
 %Eelc=Etx=Erx
 ETX=50* 10^-9;
@@ -38,34 +38,29 @@ fis3 = readfis('Cluster.radius');
 % figure(1);
 for i=1:1:n
     %Initial Energy
-    S(i).Initial_energy = 0.9;
+    S(i).Initial_energy = 0.5;
     S(i).RE = S(i).Initial_energy;
-    
-    % checkbox
-    S(i).xd=rand(1,1)*xm;
-    S(i).yd=rand(1,1)*ym;
-    %S(i).G=0;
- 
-    %initially there are no cluster heads only nodes
-    S(i).type = 'N';
-    % Node identification
-    S(i).id=i;
-    S(i).state = 'Initial_State';
- 
-    %Random node distribution
-%     plot(S(i).xd,S(i).yd,'o');
-%     hold on;
+end
+for i=1:1:10
+ for j=1:1:10
+     S((i-1)*10+j).xd= ((i-1) + rand(1))*10;
+     XR((i-1)*10+j)=S((i-1)*10+j).xd;
+     S((i-1)*10+j).yd=((j-1) + rand(1))*10;
+     YR((i-1)*10+j)=S((i-1)*10+j).yd;
+     S((i-1)*10+j).G=0;
+
+     %initially there are no cluster heads only nodes
+     S((i-1)*10+j).type='N';
+     % Node identification
+     S((i-1)*10+j).id=(i-1)*10+j;
+     S((i-1)*10+j).state='Initial_State'
+
+     %Random node distribution
+     hold on;
+ end
 end
  
 S(n+1).xd=sink.x;
 S(n+1).yd=sink.y;
 
 save('wsn.mat');
-
-
-
-
-
-
-
- 

@@ -7,30 +7,32 @@ clc;
 load('wsn.mat');
 
 figure(1);
-
-for r=1:1:rmax
+DEAD = 0;
+for r=1:1:4000
     r
-    figure(1);
+%     figure(1);
     hold off;
     
     dead = 0;
     for i=1:1:n
         %checking if there is a dead node
         if (S(i).RE<=0)
-            plot(S(i).xd,S(i).yd,'red D');
+%             plot(S(i).xd,S(i).yd,'red D');
+            S(i).RE = 0;
             dead=dead+1;
             S(i).state='DEAD';
-            hold on;
+            S(i).type = 'DEAD';
+%             hold on;
         else
             S(i).type='N';
             S(i).state='Initial_State';
             plot(S(i).xd,S(i).yd,'o');
-            hold on;
+%             hold on;
         end
     end
-    plot(S(n+1).xd,S(n+1).yd,'x');
-    text(S(n+1).xd,S(n+1).yd,'  BS','Color','b','FontWeight','b');
-    
+%     plot(S(n+1).xd,S(n+1).yd,'x');
+%     text(S(n+1).xd,S(n+1).yd,'  BS','Color','b','FontWeight','b');
+    DEAD(r)=dead;
     %  CH %
     for i= 1:1:n
        if (S(i).RE >0 )
@@ -95,7 +97,7 @@ for r=1:1:rmax
                S(i).number_worker = 0;
                cluster = cluster +1;
 
-               plot(S(i).xd,S(i).yd,'k*');
+%                plot(S(i).xd,S(i).yd,'k*');
                % compute node j received from i
                for t= 1:1:n
                  if ((isequal(S(t).type,'N') || isequal(S(t).type,'W'))&& (S(t).RE >0))
@@ -160,7 +162,7 @@ for r=1:1:rmax
     
     segments = zeros(length(All_CH)*(length(All_CH)-1)/2,3);
     for a = 1:length(All_CH)-1 % create edges between some of the nodes
-        text(All_CH(a,2),All_CH(a,3),[' ' num2str(id_CH(a))],'Color','b','FontWeight','b')
+%         text(All_CH(a,2),All_CH(a,3),[' ' num2str(id_CH(a))],'Color','b','FontWeight','b')
         for b = a+1:length(All_CH)
             d = sqrt(sum((All_CH(a,2:3) - All_CH(b,2:3)).^2));
             if (d < Rmax)
@@ -178,24 +180,24 @@ for r=1:1:rmax
     
     %Reduce energy
     %Initial Energy bit
-    Eb = 1e-9;
+    Eb = 13e-9;
 %     Eb=1e-6;
-    Energy_Transmission = 0;
     for i = 1:1:length(CH_number)
-        [distance, path] = dijkstra(All_CH, segments, CH_number(i).id, 101);
-        
+%         [distance, path] = dijkstra(All_CH, segments, CH_number(i).id, 101);
+        path = Greedy(All_CH,CH_number(i).id,60,Rmax);
+        Energy_Transmission = 0;
+        if isnan(path)
+            distance_to_bs = norm([CH_number(i).xd-50 CH_number(i).yd-50]);
+            CH_number(i).RE = CH_number(i).RE - CH_number(i).number_worker*bit*(ETX+Emp*distance_to_bs^2);
+            S([S.id] == CH_number(i).id).RE = CH_number(i).RE;
+            continue;
+        end
         for k = 1:1:length(path)-1
             Energy_Transmission = CH_number([CH_number.id] == path(k)).number_worker*Eb*bit + Energy_Transmission;
             CH_number([CH_number.id] == path(k)).RE = CH_number([CH_number.id] == path(k)).RE - Energy_Transmission;
-            
-            if(CH_number([CH_number.id] == path(k)).RE <= 0)
-               CH_number([CH_number.id] == path(k)).RE = 0;
-               S([S.id] == CH_number([CH_number.id] == path(k)).id).state = 'Dead';
-            end
             S([S.id] == CH_number([CH_number.id] == path(k)).id).RE = CH_number([CH_number.id] == path(k)).RE;
             
             
         end
     end
-    % S.RE = CH_number.RE
 end
