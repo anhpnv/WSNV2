@@ -33,31 +33,24 @@ bit = 4000;
 fis1 = readfis('dis_Fuzzyfitness1');           
 fis2 = readfis('dis_Fuzzyfitness2');               
 fis3 = readfis('Cluster.radius');
-fis4 = readfis('Greedy')
+fis_routing = readfis('Greedy');
 %Creation of the random Sensor Network
-% figure(1);
+figure(1);
 
 for i=1:1:n
     %Initial Energy
     S(i).Initial_energy = 0.5;
     S(i).RE = S(i).Initial_energy;
-    
-    % checkbox
     S(i).xd=rand(1,1)*xm;
     S(i).yd=rand(1,1)*ym;
-    %S(i).G=0;
     %initially there are no cluster heads only nodes
     S(i).type = 'N';
-    % Node identification
     S(i).id=i;
     S(i).state = 'Initial_State';
- 
-    %Random node distribution
-%     plot(S(i).xd,S(i).yd,'o');
-%     hold on;
+    S(i).distoBS = norm([S(i).xd-50 S(i).yd-50]);
+    plot(S(i).xd,S(i).yd,'o');
+    hold on;
 end
-
-S(n+1).xd=sink.x;
-S(n+1).yd=sink.y;
-
-save('wsn.mat');
+S(n+1).xd = sink.x;
+S(n+1).yd = sink.y;
+save('mazumdar.mat');

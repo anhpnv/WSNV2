@@ -23,9 +23,9 @@ MF3='High':'trapmf',[0.5 0.85 1 1]
 Name='DisttoBS'
 Range=[0 120]
 NumMFs=3
-MF1='Near':'trapmf',[-25 0 15 60]
+MF1='Near':'trapmf',[0 0 15 60]
 MF2='Modarate':'trimf',[0 60 120]
-MF3='Distant':'trapmf',[60 105 120 168]
+MF3='Distant':'trapmf',[60 105 120 120]
 
 [Output1]
 Name='Fuzzy.fitness1'

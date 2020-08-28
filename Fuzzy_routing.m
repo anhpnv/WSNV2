@@ -2,28 +2,25 @@ clear all;
 close all;
 clc;
 
-% figure(1);
-
 load('wsn.mat');
-figure(1);
 
-for r=1:1:rmax
+for r=1:1:1
     r
     figure(1);
-    hold off;
-    
+    hold on; 
     dead = 0;
     for i=1:1:n
         %checking if there is a dead node
-        if (S(i).RE<=0)
+        if (S(i).RE <= 0)
             plot(S(i).xd,S(i).yd,'red D');
-            dead=dead+1;
-            S(i).state='DEAD';
+            dead = dead+1;
+            S(i).state = 'DEAD';
             hold on;
         else
-            S(i).type='N';
-            S(i).state='Initial_State';
+            S(i).type = 'N';
+            S(i).state = 'Initial_State';
             plot(S(i).xd,S(i).yd,'o');
+            text(S(i).xd,S(i).yd,[' ' num2str(S(i).id)],'Color','b','FontWeight','b')
             hold on;
         end
     end
@@ -77,7 +74,6 @@ for r=1:1:rmax
          for i= 1:1:n
            CH_selection = 0;
            min_Td = Tc;
-
            for j= 1:1:n
                % Chon thang co Td nho nhat ma chua phai la CH va khong phai la
                % worker cua thang khac (nam trong ban kinh cua 1 CH nao do)
@@ -102,8 +98,7 @@ for r=1:1:rmax
                     if (disJToI <= S(i).rad)
                         k = length(S(t).candidate) + 1;
                         S(t).type = 'W';
-                        S(t).candidate(k) = i;
-                        
+                        S(t).candidate(k) = i;         
                     end
                  end  
                end
@@ -116,7 +111,6 @@ for r=1:1:rmax
             end
          end
     end
-
     % Chon CH cho worker
     for j= 1:1:n
         if (isequal(S(j).type,'W') && (S(j).RE >0) && length(S(j).candidate) > 0)
@@ -154,29 +148,16 @@ for r=1:1:rmax
     id_CH = [CH_number.id, 101]';
     %Trong nay chua toan bo diem CH va diem sink ben duoi cung
     All_CH = [id_CH x_CH y_CH];
-    
-    %------End Setup--------
-    %Reduce energy
-    %Initial Energy bit
-    for i = 1:length(All_CH)-1 % create edges between some of the nodes
-        text(All_CH(i,2),All_CH(i,3),[' ' num2str(id_CH(i))],'Color','b','FontWeight','b')
+    neighbor = [];
+    for i = 1:1:length(All_CH)
+        candidate_point=[];
+        neighbor = [neighbor;Blackpink(All_CH,All_CH(i,1),30,fis4)];
     end
-    Eb = 1e-9;
-%     Eb=1e-6;
-    Energy_Transmission = 0;
-    for i = 1:1:length(CH_number)
-        S(i).angle = evalfis()
-        path = Greedy(All_CH,CH_number(i).id,60,Rmax);
-        path
-        for k = 1:1:length(path)-1
-            Energy_Transmission = CH_number([CH_number.id] == path(k)).number_worker*Eb*bit + Energy_Transmission;
-            CH_number([CH_number.id] == path(k)).RE = CH_number([CH_number.id] == path(k)).RE - Energy_Transmission;     
-            if(CH_number([CH_number.id] == path(k)).RE <= 0)
-               CH_number([CH_number.id] == path(k)).RE = 0;
-               S([S.id] == CH_number([CH_number.id] == path(k)).id).state = 'Dead';
-            end
-            S([S.id] == CH_number([CH_number.id] == path(k)).id).RE = CH_number([CH_number.id] == path(k)).RE;
-    
-        end
+    All_CH = [neighbor All_CH];
+    for i = 1:1:length(All_CH)
+        S(All_CH(i,2)).fuzzyrouting = All_CH(i,1);
+    end
+    for i = 1:1:length(All_CH)
+        
     end
 end

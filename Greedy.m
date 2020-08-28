@@ -4,7 +4,7 @@ function path = Greedy(All_CH,start_id,angle,Rmax)
     n = 1;
     %Toa do diem finish: [xd yd]
     distance_max = 0;
-    finish_point = [50 50];
+    finish_point = [50 0];
     path(n) = start_id;
     while true
         %Toa do diem start:[xd yd]

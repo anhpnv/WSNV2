@@ -1,0 +1,14 @@
+clear all;
+close all;
+clc;
+load('mazumdar');
+figure(1);
+[x1,y1] = plotmf(fis3,'input',1);
+plot(x1,y1,'LineWidth',2);
+hold on;
+plot([0 1],[0 0],'black');
+grid on;
+set(gca,'GridLineStyle','--');
+ylabel('Degree of membership','FontWeight','bold','FontAngle','italic');
+xlabel('Energy Level','FontWeight','bold','FontAngle','italic');
+legend('Small','Average','High');
