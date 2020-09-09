@@ -1,6 +1,7 @@
 clear all;
 close all;
-clc;
+clc;DEAD
+
 
 % figure(1);
 
@@ -67,8 +68,9 @@ for r=1:1:4000
 %             hold on;
         end
     end
-    %Start bau CH
-    %Sap xep S(i) theo chieu tang dan cua Td
+    % Start bau CH
+    % Sap xep S(i) theo chieu tang dan cua Td %
+
     [x,idx] = sort([S.Td]);
     S = S(idx);
     for i=1:1:n
@@ -82,23 +84,24 @@ for r=1:1:4000
               for t=1:1:n
                 distance = norm([S(i).xd-S(t).xd S(i).yd-S(t).yd]);
                 if distance <= S(i).rad && distance > 0 && (S(i).RE>0)
-                  k = length(S(t).candidate) + 1;
-                  S(t).candidate(k) = S(i).id;
-                  S(t).type = 'W';
+                    k = length(S(t).candidate) + 1;
+                    S(t).candidate(k) = S(i).id;
+                    S(t).type = 'W';
                 end
               end
           end
         end
     end
     %Remember to sort S
+    % Should check again
     [x,idx] = sort([S.id]);
     S = S(idx);
     for i=1:1:n
       if isequal(S(i).type,'W') && (S(i).RE >0) && ~isempty(S(i).candidate)
         CH_cost = 0;
         for t=1:1:length(S(i).candidate)
-          distoCH = norm([S(i).xd-S(S(i).candidate(t)).xd S(i).yd-S(S(i).candidate(t)).yd]);
-          CH_cost(t) = distoCH * S(S(i).candidate(t)).distoBS/S(S(i).candidate(t)).RE;
+            distoCH = norm([S(i).xd-S(S(i).candidate(t)).xd S(i).yd-S(S(i).candidate(t)).yd]);
+            CH_cost(t) = distoCH * S(S(i).candidate(t)).distoBS/S(S(i).candidate(t)).RE;
         end
         k = find(CH_cost==min(CH_cost));
         S(i).candidate = S(i).candidate(k);
@@ -111,6 +114,7 @@ for r=1:1:4000
             S(i).number_worker = sum(tf1==1);
         end
     end
+    % End check
     %----End Cluster----
     
     %----Begin Routing-----

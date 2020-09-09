@@ -85,6 +85,7 @@ for r= 1:1:2500
         end
     end
     %Remember to sort S
+    % CheckKKKKKKKKKKKKKKKKs
     [x,idx] = sort([S.id]);
     S = S(idx);
     for i=1:1:n
@@ -156,6 +157,7 @@ for r= 1:1:2500
             S(i).TEij = Cost_election(ida,3);
         end
     end
+    % Routing
     %End of routing
     for i=1:1:n
         if isequal(S(i).type,'W') && S(i).RE >0
